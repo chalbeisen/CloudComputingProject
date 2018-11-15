@@ -14,6 +14,7 @@ import org.omg.CORBA.portable.InputStream;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 import com.google.appengine.api.datastore.Key;
 
 import sensor.*;
@@ -35,45 +36,34 @@ public class CloudComputingProjektServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
 		
-		//read Sensor data
+		//get Sensor Object from Client
 		ObjectInputStream in = new ObjectInputStream(req.getInputStream());
 		try {
 			Sensor sensor = (Sensor)in.readObject();
-			List<Float> sensorData = sensor.getTemperature();
+			//get Temperature of Sensor
+			List<Double> sensorData = sensor.getTemperature();
+			//save Keys in a list
+			List<Key> keys = new ArrayList<Key>();
 			for(int i=0;i<sensorData.size();i++)
 			{
+				//add keys to list
+				keys.add(createNewEntity(sensorData.get(i)));
 				resp.getWriter().println(sensorData.get(i));
 			}
-			createNewEntity(sensor);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	
-	public void createNewEntity(Sensor sensor)
+	public Key createNewEntity(double temperature)
 	{
-		Entity sensorEntity = new Entity("Sensor",sensor.getID());
-		sensorEntity.setProperty("Temperatur", sensor.getTemperature());
+		Entity sensorEntity = new Entity("Sensor");
+		sensorEntity.setProperty("Temperatur", temperature);
 		
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
 		Key sensorKey = ds.put(sensorEntity);
+		return sensorKey;
 	}
-	
-	/*public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-		Sensor sensor = new Sensor(30,10,40);
-		Entity sensorEntity = new Entity(sensor.getName());
-		buildEntity(sensor,sensorEntity);
-		datastore.put(sensorEntity);
-	}*/
-	
-	/*public void buildEntity(Sensor sensor, Entity sensorEntity)
-	{
-		float[] data = sensor.getSensorData();
-		for(int i=0; i<sensor.getAmount();i++)
-		{
-			sensorEntity.setProperty("temperature",data[i]);
-		}
-	}*/
 }

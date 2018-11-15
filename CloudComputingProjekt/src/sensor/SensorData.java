@@ -6,20 +6,20 @@ import java.util.Random;
 public class SensorData implements Serializable{
 
 	private Random r;
-	private float value;
+	private double value;
 	
 	public SensorData(float minVal, float maxVal)
 	{
 		r = new Random();
-		value =  (minVal+(maxVal-minVal)*r.nextFloat());
+		value =  (minVal+(maxVal-minVal)*r.nextDouble());
 	}//Constructor
 	
-	public void setValue(float value)
+	public void setValue(double value)
 	{
 		this.value =  value;
 	} // setValue
 	
-	public float getValue()
+	public double getValue()
 	{
 		return value;
 	} // getValue

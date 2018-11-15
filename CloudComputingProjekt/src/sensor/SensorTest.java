@@ -8,7 +8,7 @@ public class SensorTest {
 	{
 		Sensor s = new Sensor(2);
 		s.setSensorData(10, 40, 8);
-		List<Float> sensorData = s.getTemperature();
+		List<Double> sensorData = s.getTemperature();
 		for(int i=0; i<sensorData.size();i++)
 			System.out.println(sensorData.get(i));
 	}

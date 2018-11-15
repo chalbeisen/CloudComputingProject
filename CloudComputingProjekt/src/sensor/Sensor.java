@@ -5,12 +5,12 @@ import java.util.*;
 public class Sensor implements Serializable{
 	private SensorData sensordata;
 	private String name;
-	private List<Float> temperature;
+	private List<Double> temperature;
 	private long id;
 	
 	public Sensor(int id)
 	{
-		temperature = new ArrayList<Float>();
+		temperature = new ArrayList<Double>();
 		this.id = id;
 	}// Constructor
 	
@@ -29,7 +29,7 @@ public class Sensor implements Serializable{
 		return id;
 	}
 	
-	public List<Float> getTemperature()
+	public List<Double> getTemperature()
 	{
 		return temperature;
 	}// getSensorData
