@@ -26,15 +26,32 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class CloudComputingProjektServlet extends HttpServlet {
 	
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	//DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
 		resp.getWriter().println("Hello, world");
+		
+		int id = Integer.parseInt(req.getParameter("id"));
+		float temperature = Integer.parseInt(req.getParameter("temperature"));
+		resp.getWriter().println(temperature);
+		resp.getWriter().println(id);
 	}
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
+		resp.getWriter().println("POST");
+		
+		/*BufferedReader in = new BufferedReader(new InputStreamReader(req.getInputStream()));
+		String request = in.readLine();
+		resp.getWriter().println(request);*/
+		int id = Integer.parseInt(req.getParameter("id"));
+		float temperature = Integer.parseInt(req.getParameter("temperature"));
+		resp.getWriter().println(temperature);
+		resp.getWriter().println(id);
+		Key key = createNewEntity(id, temperature);
+		
+		/*resp.setContentType("text/plain");
 		
 		//get Sensor Object from Client
 		ObjectInputStream in = new ObjectInputStream(req.getInputStream());
@@ -53,14 +70,14 @@ public class CloudComputingProjektServlet extends HttpServlet {
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
+		} */
 	}
 
 	
-	public Key createNewEntity(double temperature)
+	public Key createNewEntity(int id, float temperature)
 	{
-		Entity sensorEntity = new Entity("Sensor");
-		sensorEntity.setProperty("Temperatur", temperature);
+		Entity sensorEntity = new Entity("Sensor",id);
+		sensorEntity.setProperty("Temperatur",temperature);
 		
 		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
 		Key sensorKey = ds.put(sensorEntity);

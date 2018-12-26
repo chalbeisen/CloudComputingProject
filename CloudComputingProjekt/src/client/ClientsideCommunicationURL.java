@@ -46,19 +46,23 @@ public class ClientsideCommunicationURL {
 	}	// setPage
 	
 	
-	public void sendSensorDataV2(Sensor sensor) throws IOException {
-		String request = "";
-		// create a connection to the given url using GET
+	public void sendSensorData(Sensor sensor) throws IOException {
+		String request = "id="+sensor.getID()+"&temp="+sensor.getTemperature();
+		// send GET request to Server 
 		URL url = new URL (HTTP_PROTOCOL, hostName, port, page);
-		HttpURLConnection con = (HttpURLConnection)url.openConnection ();
+		//System.out.println(url.toString());
+		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		con.setRequestMethod("GET");
 		con.setDoOutput(true);
-		
+		System.out.println(con.getRequestMethod());
+
 		// send the request to the server
-		DataOutputStream outToServer = new DataOutputStream(con.getOutputStream());
+		DataOutputStream out = new DataOutputStream(con.getOutputStream());
 		// send Sensor data
-		outToServer.writeBytes(request);
+		out.writeBytes(request);
+		out.flush();
 		
+		System.out.println(con.getResponseCode());
 		//read answer from server
 		BufferedReader in = new BufferedReader (new InputStreamReader (con.getInputStream ()));
 		String line = in.readLine ();
@@ -66,7 +70,8 @@ public class ClientsideCommunicationURL {
 			System.out.println (line);
 			line = in.readLine ();
 		} // while
-		
-		outToServer.close();
+
+		out.close();
+		in.close();
 	}
 }

@@ -1,38 +1,31 @@
 package sensor;
-import java.io.Serializable;
-import java.util.*;
 
-public class Sensor implements Serializable{
-	private SensorData sensordata;
+import java.util.Random;
+
+public class Sensor{
 	private String name;
-	private List<Double> temperature;
+	private float temperature;
 	private long id;
 	
 	public Sensor(int id)
 	{
-		temperature = new ArrayList<Double>();
 		this.id = id;
 	}// Constructor
 	
-	public void setSensorData(int minVal, int maxVal, int amount)
+	public float getTemperature()
 	{
-		for(int i=0; i<amount;i++)
-		{
-			SensorData s = new SensorData(minVal,maxVal);
-			temperature.add(s.getValue());
-		}
-	}// setSensorData
+		return temperature;
+	} //setTemperature
 	
+	public void setTemperature(float temperature)
+	{
+		this.temperature = temperature;
+	} //setTemperature
 	
 	public long getID()
 	{
 		return id;
-	}
-	
-	public List<Double> getTemperature()
-	{
-		return temperature;
-	}// getSensorData
+	}// getID
 	
 	public void setName(String name)
 	{
@@ -42,5 +35,11 @@ public class Sensor implements Serializable{
 	public String getName()
 	{
 		return name;
-	} // getName	
+	} // getName
+	
+	public void setRandomTemperature(float minVal, float maxVal)
+	{
+		Random r = new Random();
+		temperature = (minVal+(maxVal-minVal)*r.nextFloat());
+	}
 }
