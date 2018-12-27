@@ -49,7 +49,8 @@ public class ClientsideCommunicationURL {
 	
 	public void sendSensorData(Sensor sensor) throws IOException {
 		//set parameters
-		String parameters = "id="+sensor.getID()+"&temperature="+sensor.getTemperature();
+		sensor.setTimestamp();
+		String parameters = "id="+sensor.getID()+"&temperature="+sensor.getTemperature()+"&timestamp="+sensor.getTimestamp();
 		System.out.println(parameters);
 		
 		// send GET request to Server 

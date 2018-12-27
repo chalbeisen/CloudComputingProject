@@ -15,5 +15,7 @@ public class CommunicationURLTest {
 		Sensor sensor = new Sensor(id);
 		sensor.setRandomTemperature(10,40);
 		com.sendSensorData(sensor);
+		sensor.setRandomTemperature(10,40);
+		com.sendSensorData(sensor);
 	}
 }

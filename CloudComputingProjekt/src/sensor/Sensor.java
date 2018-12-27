@@ -1,11 +1,13 @@
 package sensor;
 
+import java.time.LocalTime;
 import java.util.Random;
 
 public class Sensor{
 	private String name;
 	private int temperature;
-	private long id;
+	private int id;
+	private long timestamp;
 	
 	public Sensor(int id)
 	{
@@ -22,7 +24,7 @@ public class Sensor{
 		this.temperature = temperature;
 	} //setTemperature
 	
-	public long getID()
+	public int getID()
 	{
 		return id;
 	}// getID
@@ -36,6 +38,16 @@ public class Sensor{
 	{
 		return name;
 	} // getName
+	
+	public void setTimestamp()
+	{
+		this.timestamp = System.currentTimeMillis();
+	} // setTimestamp
+	
+	public long getTimestamp()
+	{
+		return timestamp;
+	}
 	
 	public void setRandomTemperature(int minVal, int maxVal)
 	{
