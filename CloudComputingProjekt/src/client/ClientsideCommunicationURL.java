@@ -6,6 +6,7 @@ import java.util.List;
 
 import sensor.*;
 
+//https://cloudcomputingprojekt-2018.appspot.com/cloudcomputingprojekt?id=3&temperature=27
 public class ClientsideCommunicationURL {
 
 	private static final int     HTTP_PORT     = 80;
@@ -13,7 +14,7 @@ public class ClientsideCommunicationURL {
 	
 
 	private  int     port     = HTTP_PORT;
-	private  String  hostName = "1-dot-cloudcomputingprojekt-2018.appspot.com";
+	private  String  hostName = "cloudcomputingprojekt-2018.appspot.com";
 	private  String  page     = "/cloudcomputingprojekt";
 
 	public int getPort () {
@@ -47,19 +48,22 @@ public class ClientsideCommunicationURL {
 	
 	
 	public void sendSensorData(Sensor sensor) throws IOException {
-		String request = "id="+sensor.getID()+"&temp="+sensor.getTemperature();
+		//set parameters
+		String parameters = "id="+sensor.getID()+"&temperature="+sensor.getTemperature();
+		System.out.println(parameters);
+		
 		// send GET request to Server 
 		URL url = new URL (HTTP_PROTOCOL, hostName, port, page);
+		
 		//System.out.println(url.toString());
 		HttpURLConnection con = (HttpURLConnection)url.openConnection();
 		con.setRequestMethod("GET");
 		con.setDoOutput(true);
-		System.out.println(con.getRequestMethod());
 
 		// send the request to the server
 		DataOutputStream out = new DataOutputStream(con.getOutputStream());
 		// send Sensor data
-		out.writeBytes(request);
+		out.writeBytes(parameters);
 		out.flush();
 		
 		System.out.println(con.getResponseCode());
@@ -71,7 +75,7 @@ public class ClientsideCommunicationURL {
 			line = in.readLine ();
 		} // while
 
-		out.close();
+		//out.close();
 		in.close();
 	}
 }

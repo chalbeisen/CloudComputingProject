@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Sensor{
 	private String name;
-	private float temperature;
+	private int temperature;
 	private long id;
 	
 	public Sensor(int id)
@@ -12,12 +12,12 @@ public class Sensor{
 		this.id = id;
 	}// Constructor
 	
-	public float getTemperature()
+	public int getTemperature()
 	{
 		return temperature;
 	} //setTemperature
 	
-	public void setTemperature(float temperature)
+	public void setTemperature(int temperature)
 	{
 		this.temperature = temperature;
 	} //setTemperature
@@ -37,9 +37,10 @@ public class Sensor{
 		return name;
 	} // getName
 	
-	public void setRandomTemperature(float minVal, float maxVal)
+	public void setRandomTemperature(int minVal, int maxVal)
 	{
 		Random r = new Random();
-		temperature = (minVal+(maxVal-minVal)*r.nextFloat());
+		temperature = (minVal+r.nextInt(maxVal-minVal));
+		System.out.println(temperature);
 	}
 }

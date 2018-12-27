@@ -7,15 +7,13 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import com.google.appengine.api.datastore.*;
 
 import org.omg.CORBA.portable.InputStream;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import sensor.*;
 
@@ -23,10 +21,10 @@ import java.util.*;
 
 //https://cloud.google.com/appengine/docs/standard/java/datastore/entities
 
-@SuppressWarnings("serial")
 public class CloudComputingProjektServlet extends HttpServlet {
 	
 	//DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
 	
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		resp.setContentType("text/plain");
