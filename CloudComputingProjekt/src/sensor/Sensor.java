@@ -1,58 +1,24 @@
 package sensor;
 
-import java.time.LocalTime;
-import java.util.Random;
+import java.io.IOException;
 
-public class Sensor{
-	private String name;
-	private int temperature;
-	private int id;
-	private long timestamp;
+public class Sensor extends AbstractSensor{
 	
-	public Sensor(int id)
+	public Sensor(String id, Location location, SensorData data, String hostName, String page)
 	{
-		this.id = id;
-	}// Constructor
-	
-	public int getTemperature()
-	{
-		return temperature;
-	} //setTemperature
-	
-	public void setTemperature(int temperature)
-	{
-		this.temperature = temperature;
-	} //setTemperature
-	
-	public int getID()
-	{
-		return id;
-	}// getID
-	
-	public void setName(String name)
-	{
-		this.name = name;
-	} // setName
-	
-	public String getName()
-	{
-		return name;
-	} // getName
-	
-	public void setTimestamp()
-	{
-		this.timestamp = System.currentTimeMillis();
-	} // setTimestamp
-	
-	public long getTimestamp()
-	{
-		return timestamp;
+		super(id,location,data, hostName, page);
 	}
-	
-	public void setRandomTemperature(int minVal, int maxVal)
-	{
-		Random r = new Random();
-		temperature = (minVal+r.nextInt(maxVal-minVal));
-		System.out.println(temperature);
+
+	@Override
+	public void run() {
+		//while(true)
+		{
+			try {
+				com.sendSensorData(this);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }
