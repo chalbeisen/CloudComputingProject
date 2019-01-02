@@ -13,12 +13,13 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import sensor.Location;
 import sensor.Sensor;
 import sensor.SensorData;
 
-public class HttpCommunication {
+public class HttpCommunication extends AbstractParameterSetter{
 
 	private static final int     HTTP_PORT     = 80;
 	private static final String  HTTP_PROTOCOL = "http";
@@ -28,6 +29,7 @@ public class HttpCommunication {
 	private  String  hostName = "cloudcomputingprojekt-2018.appspot.com";
 	private  String  page     = "/cloudcomputingprojekt";
 	private  HttpURLConnection con;
+	private  boolean isConnected = false;
 
 	public int getPort () {
 		return port;
@@ -58,10 +60,24 @@ public class HttpCommunication {
 		this.page = page;
 	}	// setPage
 	
+	//TODO: disconnect?
 	public void connect() throws IOException
 	{
-		URL url = new URL (HTTP_PROTOCOL, hostName, port, page);
-		con = (HttpURLConnection)url.openConnection();
+		if(!isConnected)
+		{
+			URL url = new URL (HTTP_PROTOCOL, hostName, port, page);
+			con = (HttpURLConnection)url.openConnection();
+			isConnected = true;
+		}
+	}
+	
+	public void disconnect()
+	{
+		if(isConnected)
+		{
+			con.disconnect();
+			isConnected = false;
+		}
 	}
 	
 	public void sendSensorData(Sensor sensor) throws IOException{
@@ -89,45 +105,68 @@ public class HttpCommunication {
 		out.close();
 	}
 	
-	public String readResponse() throws IOException
+	//TODO : löschen??? 
+	//TODO: UnsupportedEncodingException
+	public void retrieveSensor(String sensorID) throws IOException 
+	{
+		Map<String,String> parameters = new HashMap<>();
+		parameters.put("option", "retrieveSensor");
+		parameters.put("sensorID", sensorID);
+		String query="";
+		try {
+			query = setParameterString(parameters);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// set GET request
+		connect();
+		con.setRequestMethod("POST");
+		con.setDoOutput(true);
+				
+		// send the request to the server
+		DataOutputStream out = new DataOutputStream(con.getOutputStream());
+		out.writeBytes(query);
+		out.flush();
+		
+		System.out.println("Communication DEBUG Information");
+		System.out.println("Response Code: "+con.getResponseCode());
+		System.out.println("parameter "+ query);
+				
+		//DEBUG 
+		readResponseRetrieveSensor();
+				
+		//out.close();
+	}
+	
+	public void readResponse() throws IOException
 	{
 		BufferedReader in = new BufferedReader (new InputStreamReader (con.getInputStream ()));
 		String line = in.readLine ();
 		while (line != null) {
 			line = in.readLine ();
+			System.out.println(line);
 		}
-		return line;
 	}
 	
-	public String setParameters(Sensor sensor) throws UnsupportedEncodingException
+	public void readResponseRetrieveSensor() throws IOException
 	{
-		Map<String,String> parameters = new HashMap<>();
-		parameters.put("sensorID", sensor.getId());
-		parameters.put("longitude", Double.toString(sensor.getLocation().getLongitude()));
-		parameters.put("latitude", Double.toString(sensor.getLocation().getLatitude()));
-		parameters.put("sensorDataID", sensor.getSensorData().getID());
-		parameters.put("currentTimeMillis", Long.toString(sensor.getSensorData().getCurrentTimeMillis()));
-		parameters.put("temperature", Double.toString(sensor.getSensorData().getTemperature()));
+		BufferedReader in = new BufferedReader (new InputStreamReader (con.getInputStream ()));
+		String line = in.readLine();
+		while (line != null) {
+			StringTokenizer st = new StringTokenizer(line,"&");
+			System.out.println(line);
+			while(st.hasMoreTokens())
+			{
+				System.out.println(st.nextToken("="));
+			}
+			line = in.readLine();
+		}
 		
-		return setParameterString(parameters);
 	}
 	
-	public String setParameterString(Map<String,String> parameters) throws UnsupportedEncodingException
-	{
-	    StringBuilder result = new StringBuilder();
-	    	 
-	    for (Map.Entry<String, String> entry : parameters.entrySet()) {
-	    	 result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-	    	 result.append("=");
-	    	 result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-	    	 result.append("&");
-	    }
-	    	 
-	    String resultString = result.toString();
-	    
-	    return resultString;
-	}
-	
+	//TODO : löschen???
 	public void printDebugInformation(int responseCode, String URL, String parameters)
 	{
 		System.out.println("Communication DEBUG Information");

@@ -14,7 +14,9 @@ public class Sensor extends AbstractSensor{
 		//while(true)
 		{
 			try {
-				com.sendSensorData(this);
+				//com.sendSensorData(this);
+				//com.disconnect();
+				com.retrieveSensor(this.getId());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
