@@ -18,8 +18,6 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 
 import communication.AbstractParameterSetter;
 
-import com.google.api.client.util.DateTime;
-
 import sensor.Location;
 
 public class DataStoreManager extends AbstractParameterSetter{
@@ -55,19 +53,20 @@ public class DataStoreManager extends AbstractParameterSetter{
 		ds.put(sensorDataEntity);
 	}
 	
-	public String retrieveSensor(String sensorID) throws UnsupportedEncodingException
+	public String retrieveSensor()
 	{
-		Query q = new Query("sensor").setFilter(new Query.FilterPredicate("sensorID", FilterOperator.EQUAL, sensorID));
+		Query q = new Query("sensor");
 		PreparedQuery pq = ds.prepare(q);
 		
-		Map<String,String> parameters = new HashMap<>();
+		StringBuilder sb = new StringBuilder();
 		for (Entity result : pq.asIterable())
 		{
-			parameters.put("sensorID", (String)result.getProperty("sensorID"));
-			parameters.put("latitude",String.valueOf(result.getProperty("latitude")));
-			parameters.put("longitude", String.valueOf(result.getProperty("longitude")));
+			sb.append(String.valueOf(result.getProperty("latitude")));
+			sb.append(",");
+			sb.append(String.valueOf(result.getProperty("longitude")));
+			sb.append(";");
 		}
-		return setParameterString(parameters);
+		return sb.toString();
 	}
 	
 	public String retrieveSensorData(String sensorDataID)

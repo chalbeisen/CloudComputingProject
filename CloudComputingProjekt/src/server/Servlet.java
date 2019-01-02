@@ -17,14 +17,13 @@ public class Servlet extends HttpServlet{
 
 	DataStoreManager ds =  new DataStoreManager();
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException, IOException
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
 		String option = req.getParameter("option");
 		switch(option)
 		{
 			case "retrieveSensor":
-				String sensorID = req.getParameter("sensorID");
-				resp.getWriter().println(ds.retrieveSensor(sensorID));
+				resp.getWriter().println(ds.retrieveSensor());
 				break;
 		}
 	}
@@ -40,13 +39,8 @@ public class Servlet extends HttpServlet{
 			switch(option)
 			{
 				case "retrieveSensor":
-					String sensorID2 = req.getParameter("sensorID");
-					try {
-						resp.getWriter().println(ds.retrieveSensor(sensorID2));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					resp.getWriter().println(ds.retrieveSensor());
+
 					break;
 				default:
 					break;

@@ -107,11 +107,10 @@ public class HttpCommunication extends AbstractParameterSetter{
 	
 	//TODO : löschen??? 
 	//TODO: UnsupportedEncodingException
-	public void retrieveSensor(String sensorID) throws IOException 
+	public void retrieveSensors() throws IOException 
 	{
 		Map<String,String> parameters = new HashMap<>();
 		parameters.put("option", "retrieveSensor");
-		parameters.put("sensorID", sensorID);
 		String query="";
 		try {
 			query = setParameterString(parameters);
@@ -135,7 +134,7 @@ public class HttpCommunication extends AbstractParameterSetter{
 		System.out.println("parameter "+ query);
 				
 		//DEBUG 
-		readResponseRetrieveSensor();
+		readResponse();
 				
 		//out.close();
 	}
@@ -145,25 +144,9 @@ public class HttpCommunication extends AbstractParameterSetter{
 		BufferedReader in = new BufferedReader (new InputStreamReader (con.getInputStream ()));
 		String line = in.readLine ();
 		while (line != null) {
+			System.out.println(line);
 			line = in.readLine ();
-			System.out.println(line);
 		}
-	}
-	
-	public void readResponseRetrieveSensor() throws IOException
-	{
-		BufferedReader in = new BufferedReader (new InputStreamReader (con.getInputStream ()));
-		String line = in.readLine();
-		while (line != null) {
-			StringTokenizer st = new StringTokenizer(line,"&");
-			System.out.println(line);
-			while(st.hasMoreTokens())
-			{
-				System.out.println(st.nextToken("="));
-			}
-			line = in.readLine();
-		}
-		
 	}
 	
 	//TODO : löschen???

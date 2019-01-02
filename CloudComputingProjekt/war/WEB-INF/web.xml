@@ -6,7 +6,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
 		<servlet-name>CloudComputingProjekt</servlet-name>
-		<servlet-class>general.CloudComputingProjektServlet</servlet-class>
+		<servlet-class>server.Servlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>CloudComputingProjekt</servlet-name>
